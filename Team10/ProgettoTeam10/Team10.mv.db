@@ -1,0 +1,110 @@
+CREATE TABLE Docente(
+	Matricola VARCHAR(10) PRIMARY KEY,
+    Nome VARCHAR(15) ,
+    Cognome VARCHAR(15) 
+);
+ 
+CREATE TABLE Corso(
+	Codice VARCHAR(10) PRIMARY KEY,					
+    Denominazione VARCHAR(25) ,
+    Num_CFU INT,
+    Tipologia VARCHAR(25) 
+);
+ 
+CREATE TABLE Corsi_Propedeutici(
+	id_corso VARCHAR(10),
+    id_corsoP VARCHAR(10)
+);
+ 
+CREATE TABLE esami_svolti(
+	usernameS VARCHAR(10),
+    idCorso VARCHAR(10),
+    Valutazione INT,
+    Lode INT,
+    DataSuperamento VARCHAR(10),
+    note_docente TEXT
+);
+ 
+CREATE TABLE Esame(
+	id_stu VARCHAR(10) NOT NULL,
+	id_esame VARCHAR(10) NOT NULL,
+	Valutazione INT ,
+    Lode BOOLEAN ,
+    Note_docenti TEXT,
+	DataSuperamento VARCHAR(8)
+);
+ 
+CREATE TABLE Studente (
+    Username VARCHAR(20) PRIMARY KEY NOT NULL,
+    Password VARCHAR(32) NOT NULL,
+    Pin INT(6) NOT NULL,
+    Nome VARCHAR(15) NOT NULL,
+    Cognome VARCHAR(15) NOT NULL,
+    media_ponderata DECIMAL(5,2),
+    media_aritmetica DECIMAL(5,2)
+);
+ 
+
+ALTER TABLE esami_svolti
+ADD CONSTRAINT FK_usernameS
+FOREIGN KEY (usernameS)
+REFERENCES Studente(Username);
+
+
+ALTER TABLE esami_svolti
+ADD CONSTRAINT FK_idCorso
+FOREIGN KEY (idCorso)
+REFERENCES Corso(Codice);
+ 
+ ALTER TABLE corsi_propedeutici
+ ADD CONSTRAINT FK_idcorsoo
+ FOREIGN KEY (id_corso)
+ REFERENCES Corso(Codice)
+ 
+ ALTER TABLE corsi_propedeutici
+ ADD CONSTRAINT FK_idcorsoP
+ FOREIGN KEY (id_corsoP)
+ REFERENCES Corso(Codice)
+ 
+INSERT INTO Studente (Username, Password, Pin, Nome, Cognome, media_ponderata, media_aritmetica)
+VALUES 
+( 'user1', 'password1', 123456, 'Mario', 'Rossi', 28.50, 27.80),
+( 'user2', 'password2', 654321, 'Luigi', 'Verdi', 26.30, 25.50),
+( 'user3', 'password3', 112233, 'Anna', 'Bianchi', 29.00, 28.70),
+( 'user4', 'password4', 445566, 'Sara', 'Neri', 27.80, 27.20),
+( 'user5', 'password5', 778899, 'Paolo', 'Gialli', 30.00, 29.50),
+( 'user6', 'password6', 998877, 'Lucia', 'Marroni', 24.50, 23.80),
+( 'user7', 'password7', 334455, 'Giuseppe', 'Azzurri', 26.00, 25.00),
+( 'user8', 'password8', 667788, 'Chiara', 'Bianchi', 29.50, 28.90),
+( 'user9', 'password9', 223344, 'Stefano', 'Rossi', 28.00, 27.50),
+( 'user10', 'password10', 556677, 'Elena', 'Verdi', 27.50, 27.00)
+ 
+INSERT INTO Corso (Codice, Denominazione, Num_CFU, Tipologia)
+VALUES 
+('C001', 'Baritoni', 6, 'Canto'),
+('C002', 'Chitarra', 9, 'Strumento'),
+('C003', 'Pentagramma', 6, 'Composizione'),
+('C004', 'Orchestra', 9, 'Musica di insieme'),
+('C005', 'La musicalità del 1600', 3, 'Didattica della musica'),
+('C006', 'Tecnica Vocale', 6, 'Canto'),
+('C007', 'Batteria', 9, 'Strumento'),
+('C008', 'Percussioni', 6, 'Strumento'),
+('C009', 'Palcoscenico', 9, 'Musica di insieme'),
+('C0010', 'Ludwig van Beethoven', 3, 'Didattica della musica');
+ 
+INSERT INTO Esami_svolti (usernameS, idCorso, Valutazione, Lode, note_docente, DataSuperamento)
+VALUES 
+('user1', 'C001', 28, "0", 'Ottima performance', '2023-06-15'),
+('user1', 'C006', 30, "0", 'Eccellente', '2023-06-20'),
+('user2', 'C008', 26, "0", 'Buon lavoro', '2023-06-18'),
+('user2', 'C001', 29, "0", 'Molto bene', '2023-06-22'),
+('user3', 'C003', 30, "1", 'Soddisfacente', '2023-06-17'),
+('user4', 'C0010', 25, "0", 'Adeguato', '2023-06-19'),
+('user4', 'C002', 28, "0", 'Ottima comprensione', '2023-06-21');
+ 
+INSERT INTO Corsi_Propedeutici (id_corso, id_corsoP) VALUES
+('C004', 'C006'),
+('C004', 'C009'),
+('C007', 'C008'),
+('C0010', 'C005');
+
